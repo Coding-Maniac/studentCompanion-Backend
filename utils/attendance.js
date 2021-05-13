@@ -15,7 +15,7 @@ const attendance = async (rollNumber, password) => {
     await tt.sendKeys('1',Key.ENTER)
     function setDate(){
         document.getElementsByName("fromDate")[0].value="03/01/2021"
-        document.getElementsByName("toDate")[0].value="03/05/2021"
+        document.getElementsByName("toDate")[0].value="13/05/2021"
     }
     driver.executeScript(setDate)
     let btn2 =  driver.findElement(By.css('input[type="submit"]'))
