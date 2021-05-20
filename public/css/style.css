@@ -21,10 +21,6 @@
 #team{
     display: none;
 }
-.attendance-card{
+#attendance-row{
     display: none;
-}
-
-.row{
-    padding:0
 }
