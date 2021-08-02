@@ -22,23 +22,9 @@ app.get('', (req, res) => {
     res.render('index')
 })
 
-app.get('/attendance', (req, res) => {
-    if (!req.query.rollNumber || !req.query.password) {
-        return res.send({
-            error: "Login and Password Must be provided"
-        })
-    }
-    else {
-        let rollNumber = req.query.rollNumber
-        let password = req.query.password
-        attendance(rollNumber, password).then((val) => {
-            return res.send(val)
-        }).catch((err) => {
-            res.send({
-                error: "Kindly Check your Roll Number And Password and Check again"
-            })
-        })
-    }
+app.get('/', function (req, res) {
+    const clientIP = req.headers['x-forwarded-for'];
+    res.send(`Hello World from host ${os.hostname()} ${clientIP}!`)
 })
 
 app.listen(port, () => {
