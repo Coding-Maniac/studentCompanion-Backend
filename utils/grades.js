@@ -2,6 +2,7 @@ const { default: Cheerio } = require('cheerio');
 const { Builder, By, Key } = require('selenium-webdriver');
 const login = require('./common/initializeLogin')
 const { data } = require('cheerio/lib/api/attributes');
+const fs = require('fs')
 // Grades Object 
 const gradesObject = {}
 
@@ -28,6 +29,9 @@ const grades = async (rollNumber, password) => {
             }
         )
     }
+
+    // To update sample.json 
+    // fs.writeFileSync('sample.json', JSON.stringify(gradesObject))
     return gradesObject
 }
 
@@ -40,8 +44,9 @@ const gradeCalculator = (grades, i) => {
     let currentSem = gradesObject[`semester${i}`]
     currentSem.subjects = {}
     // To avoid the additional CGPA, GPA and TotalCredits 
-    let gpaTest = $(`tbody tr:nth-of-type(${numberOfSubjects}) th`).text()
-    if (gpaTest === "gpa") {
+    let gpaTest = $(`tbody tr:nth-of-type(${numberOfSubjects - 3}) th`).text()
+
+    if (gpaTest === "GPA") {
         numberOfSubjects = numberOfSubjects - 3
     } else {
         numberOfSubjects = numberOfSubjects - 2
@@ -73,5 +78,5 @@ const gradeCalculator = (grades, i) => {
 }
 
 
-module.exports = grades
-// grades(18113075, 123456)
+// module.exports = grades
+grades(18113075, 123456)

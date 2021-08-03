@@ -24,14 +24,10 @@
             "CYA4131": {
                 "grade": "A",
                 "subjectName": "MATERIALS CHEMISTRY LAB"
-            },
-            "": {
-                "grade": "",
-                "subjectName": ""
             }
         },
-        "gpa": null,
-        "cgpa": null
+        "gpa": "7.71",
+        "cgpa": "7.71"
     },
     "semester2": {
         "subjects": {
