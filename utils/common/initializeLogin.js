@@ -7,6 +7,7 @@ chromeOptions.addArguments("start-maximized"); // open Browser in maximized mode
 chromeOptions.addArguments("disable-infobars"); // disabling infobars
 chromeOptions.addArguments("--disable-extensions"); // disabling extensions
 chromeOptions.addArguments("--no-sandbox");
+chromeOptions.headless = true
 const wrapper = (rollNumber, password) => initializeLogin(rollNumber, password)
 const initializeLogin = async (rollNumber, password) => {
     // Initializing the driver
