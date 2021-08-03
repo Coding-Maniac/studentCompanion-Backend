@@ -3,7 +3,7 @@ const { Builder, By, Key } = require('selenium-webdriver');
 const wrapper = (rollNumber, password) => initializeLogin(rollNumber, password)
 const initializeLogin = async (rollNumber, password) => {
     // Initializing the driver
-    let driver = await new Builder().forBrowser('chrome').build()
+    let driver = await new Builder().forBrowser('chrome').setChromeOptions('headless', '--no-sandbox').build()
     await driver.get('https://studentportal.hindustanuniv.ac.in');
 
     // Entering Username

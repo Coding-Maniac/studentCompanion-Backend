@@ -78,5 +78,5 @@ const gradeCalculator = (grades, i) => {
 }
 
 
-// module.exports = grades
-grades(18113075, 123456)
+module.exports = grades
+// grades(18113075, 123456)
