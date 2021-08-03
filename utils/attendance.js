@@ -93,7 +93,7 @@ function attendanceFinder(totalClasses, AttendedClasses) {
     return Math.ceil(numberOfClassesToAttend);
 }
 
-// module.exports = attendance
-attendance(18113075, 123456)
+module.exports = attendance
+// attendance(18113075, 123456)
 
 

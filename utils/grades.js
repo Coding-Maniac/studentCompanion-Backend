@@ -1,6 +1,10 @@
 const { default: Cheerio } = require('cheerio');
 const { Builder, By, Key } = require('selenium-webdriver');
 const login = require('./common/initializeLogin')
+const { data } = require('cheerio/lib/api/attributes');
+// Grades Object 
+const gradesObject = {}
+
 const grades = async (rollNumber, password) => {
     let driver = await login.wrapper(rollNumber, password)
 
@@ -24,10 +28,8 @@ const grades = async (rollNumber, password) => {
             }
         )
     }
-    console.log(gradesObject)
+    return gradesObject
 }
-
-const gradesObject = {}
 
 const gradeCalculator = (grades, i) => {
 
@@ -38,11 +40,17 @@ const gradeCalculator = (grades, i) => {
     let currentSem = gradesObject[`semester${i}`]
     currentSem.subjects = {}
     // To avoid the additional CGPA, GPA and TotalCredits 
-    numberOfSubjects = numberOfSubjects - 3
+    let gpaTest = $(`tbody tr:nth-of-type(${numberOfSubjects}) th`).text()
+    if (gpaTest === "gpa") {
+        numberOfSubjects = numberOfSubjects - 3
+    } else {
+        numberOfSubjects = numberOfSubjects - 2
+    }
     for (let j = 1; j < numberOfSubjects; j++) {
         let subjectCode = $(`tbody tr:nth-of-type(${j}) td:nth-of-type(2)`).text()
-        let marks = $(`tbody tr:nth-of-type(${j}) td:nth-of-type(5)`).text()
-        currentSem.subjects[`${subjectCode}`] = marks
+        let grade = $(`tbody tr:nth-of-type(${j}) td:nth-of-type(5)`).text()
+        let subjectName = $(`tbody tr:nth-of-type(${j}) td:nth-of-type(3)`).text()
+        currentSem.subjects[`${subjectCode}`] = { grade, subjectName }
     }
 
     // GPA
@@ -51,7 +59,7 @@ const gradeCalculator = (grades, i) => {
         let gpa = $(`tbody tr:nth-of-type(${numberOfSubjects}) td`).text()
         currentSem.gpa = gpa
     } else {
-        currentSem.gp = null
+        currentSem.gpa = null
     }
 
     // CGPA
@@ -65,4 +73,5 @@ const gradeCalculator = (grades, i) => {
 }
 
 
-grades(18113075, 123456)
+module.exports = grades
+// grades(18113075, 123456)

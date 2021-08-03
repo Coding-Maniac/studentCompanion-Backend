@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express()
 const attendance = require('./utils/attendance')
+const grades = require('./utils/grades')
 
 // port configuarion
 const port = process.env.PORT || 3030
@@ -26,6 +27,10 @@ app.get('/attendance', (req, res) => {
             })
         })
     }
+})
+
+app.get('/grades', (req, res) => {
+    grades(18113075, 123456).then((val) => res.send(val))
 })
 
 app.listen(port, () => {

@@ -1,0 +1,223 @@
+{
+    "semester1": {
+        "subjects": {
+            "MAA4101": {
+                "grade": "B",
+                "subjectName": "MATRICES AND CALCULUS"
+            },
+            "CYA4101": {
+                "grade": "D",
+                "subjectName": "ENGINEERING MATERIALS"
+            },
+            "CSA4101": {
+                "grade": "B",
+                "subjectName": "PROBLEM SOLVING USING C"
+            },
+            "ELA4101": {
+                "grade": "A",
+                "subjectName": "PROFESSIONAL ENGLISH & SOFT SKILLS"
+            },
+            "EEB4101": {
+                "grade": "C",
+                "subjectName": "INTRODUCTION TO DIGITAL SYSTEMS"
+            },
+            "CYA4131": {
+                "grade": "A",
+                "subjectName": "MATERIALS CHEMISTRY LAB"
+            },
+            "": {
+                "grade": "",
+                "subjectName": ""
+            }
+        },
+        "gpa": null,
+        "cgpa": null
+    },
+    "semester2": {
+        "subjects": {
+            "MAA4117": {
+                "grade": "C",
+                "subjectName": "ANALYTICAL MATHEMATICS"
+            },
+            "PHA4102": {
+                "grade": "B",
+                "subjectName": "ENGINEERING PHYSICS"
+            },
+            "MEA4101": {
+                "grade": "C",
+                "subjectName": "ENGINEERING GRAPHICS AND COMPUTER AIDED DESIGN"
+            },
+            "GEA4102": {
+                "grade": "A",
+                "subjectName": "SUSTAINABLE ENGINEERING SYSTEMS"
+            },
+            "CSB4101": {
+                "grade": "B",
+                "subjectName": "ENGINEERING AND DESIGN"
+            },
+            "CSB4117": {
+                "grade": "A",
+                "subjectName": "DATA STRUCTURES USING C"
+            },
+            "CSB4118": {
+                "grade": "A",
+                "subjectName": "OBJECT ORIENTED PROGRAMMING USING C++"
+            },
+            "CSB4146": {
+                "grade": "A",
+                "subjectName": "DATA STRUCTURES LAB"
+            },
+            "PHA4131": {
+                "grade": "S",
+                "subjectName": "ENGINEERING PHYSICS LAB"
+            },
+            "GEA4131": {
+                "grade": "A",
+                "subjectName": "ENGINEERING IMMERSION LAB"
+            },
+            "IBA4101": {
+                "grade": "A",
+                "subjectName": "INTRODUCTION TO ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING"
+            }
+        },
+        "gpa": null,
+        "cgpa": null
+    },
+    "semester3": {
+        "subjects": {
+            "MAA4201": {
+                "grade": "B",
+                "subjectName": "PARTIAL DIFFERENTIAL EQUATIONS AND TRANSFORMS"
+            },
+            "IBA4201": {
+                "grade": "A",
+                "subjectName": "APPLIED STATISTICS"
+            },
+            "CSB4201": {
+                "grade": "A",
+                "subjectName": "DESIGN AND ANALYSIS  OF ALGORITHMS"
+            },
+            "CSB4202": {
+                "grade": "B",
+                "subjectName": "DATABASE MANAGEMENT SYSTEMS"
+            },
+            "CSB4203": {
+                "grade": "S",
+                "subjectName": "JAVA PROGRAMMING"
+            },
+            "CSB4231": {
+                "grade": "S",
+                "subjectName": "PYTHON PROGRAMMING LAB"
+            },
+            "CSB4232": {
+                "grade": "S",
+                "subjectName": "DATABASE MANAGEMENT SYSTEMS LAB"
+            },
+            "ECD4284": {
+                "grade": "B",
+                "subjectName": "BASICS OF NEURAL NETWORKS AND FUZZY LOGIC"
+            },
+            "": {
+                "grade": "",
+                "subjectName": ""
+            }
+        },
+        "gpa": null,
+        "cgpa": null
+    },
+    "semester4": {
+        "subjects": {
+            "MAA4219": {
+                "grade": "A",
+                "subjectName": "DISCRETE MATHEMATICS"
+            },
+            "CSB4216": {
+                "grade": "B",
+                "subjectName": "COMPUTER ORGANIZATION AND ARCHITECTURE"
+            },
+            "CSB4217": {
+                "grade": "S",
+                "subjectName": "COMPUTER NETWORKS"
+            },
+            "CSB4218": {
+                "grade": "A",
+                "subjectName": "OPERATING SYSTEMS"
+            },
+            "CSB4241": {
+                "grade": "S",
+                "subjectName": "NETWORKING LAB"
+            },
+            "CSB4242": {
+                "grade": "A",
+                "subjectName": "OPERATING SYSTEMS LAB"
+            },
+            "CSB4243": {
+                "grade": "S",
+                "subjectName": "DESIGN PROJECT-I"
+            },
+            "CSB4244": {
+                "grade": "S",
+                "subjectName": "INTERNSHIP"
+            }
+        },
+        "gpa": null,
+        "cgpa": null
+    },
+    "semester5": {
+        "subjects": {
+            "GEA4216": {
+                "grade": "S",
+                "subjectName": "PROFESSIONAL ETHICS AND LIFE SKILLS"
+            },
+            "MGD4382": {
+                "grade": "S",
+                "subjectName": "COMMUNICATION SKILLS  AND BUSINESS CORRESPONDENCE"
+            },
+            "ATD4382": {
+                "grade": "U",
+                "subjectName": "AUTOMOTIVE SAFETY SYSTEMS"
+            },
+            "CSB4302": {
+                "grade": "B",
+                "subjectName": "THEORY OF COMPUTATION"
+            },
+            "CSB4303": {
+                "grade": "B",
+                "subjectName": "ARTIFICIAL INTELLIGENCE"
+            },
+            "CSB4331": {
+                "grade": "S",
+                "subjectName": "SKILL DEVELOPMENT IN PROGRAMMING"
+            },
+            "IBC4303": {
+                "grade": "A",
+                "subjectName": "WEB PROGRAMMING THROUGH PHP & HTML"
+            },
+            "IBS4301": {
+                "grade": "S",
+                "subjectName": "IT NETWORK SECURITY"
+            },
+            "MAA4302": {
+                "grade": "S",
+                "subjectName": "PROBABILITY AND STATISTICS"
+            }
+        },
+        "gpa": null,
+        "cgpa": null
+    },
+    "semester6": {
+        "subjects": {},
+        "gpa": null,
+        "cgpa": null
+    },
+    "semester7": {
+        "subjects": {},
+        "gpa": null,
+        "cgpa": null
+    },
+    "semester8": {
+        "subjects": {},
+        "gpa": null,
+        "cgpa": null
+    }
+}
