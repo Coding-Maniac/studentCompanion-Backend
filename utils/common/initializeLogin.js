@@ -1,9 +1,16 @@
 // Common Module to initialize All logins
 const { Builder, By, Key } = require('selenium-webdriver');
+const chrome = require("selenium-webdriver/chrome");
+const chromeOptions = new chrome.Options();
+chromeOptions.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+chromeOptions.addArguments("start-maximized"); // open Browser in maximized mode
+chromeOptions.addArguments("disable-infobars"); // disabling infobars
+chromeOptions.addArguments("--disable-extensions"); // disabling extensions
+chromeOptions.addArguments("--no-sandbox");
 const wrapper = (rollNumber, password) => initializeLogin(rollNumber, password)
 const initializeLogin = async (rollNumber, password) => {
     // Initializing the driver
-    let driver = await new Builder().forBrowser('chrome').setChromeOptions('headless', '--no-sandbox').build()
+    let driver = await new Builder().forBrowser('chrome').setChromeOptions(chromeOptions).build()
     await driver.get('https://studentportal.hindustanuniv.ac.in');
 
     // Entering Username

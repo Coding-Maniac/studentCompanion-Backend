@@ -32,6 +32,7 @@ const grades = async (rollNumber, password) => {
 
     // To update sample.json 
     // fs.writeFileSync('sample.json', JSON.stringify(gradesObject))
+    console.log(gradesObject)
     return gradesObject
 }
 
