@@ -2,7 +2,12 @@ const express = require('express');
 const app = express()
 const attendance = require('./utils/attendance')
 const grades = require('./utils/grades')
-
+app.use(express.json())
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 // port configuarion
 const port = process.env.PORT || 3030
 
@@ -10,18 +15,21 @@ app.get('/', function (req, res) {
     res.send(`Hello World from host ERP API!`)
 })
 
-app.get('/attendance', (req, res) => {
-    if (!req.query.rollNumber || !req.query.password) {
+app.post('/attendance', (req, res) => {
+    console.log(req.body)
+    if (!req.body.rollNumber || !req.body.password) {
+        res.status(400)
         return res.send({
             error: "Login and Password Must be provided"
         })
     }
     else {
-        let rollNumber = req.query.rollNumber
-        let password = req.query.password
+        let rollNumber = req.body.rollNumber
+        let password = req.body.password
         attendance(rollNumber, password).then((val) => {
             return res.send(val)
         }).catch((err) => {
+            res.status(404)
             res.send({
                 error: "Kindly Check your Roll Number And Password and Check again"
             })
@@ -29,8 +37,9 @@ app.get('/attendance', (req, res) => {
     }
 })
 
-app.get('/grades', (req, res) => {
+app.post('/grades', (req, res) => {
     grades(18113075, 123456).then((val) => res.send(val))
+    // console.log(req.body)
 })
 
 app.listen(port, () => {

@@ -11,13 +11,16 @@ const attendance = async (rollNumber, password) => {
 
 
     // Selecting the time table
-
     await driver.findElement(By.css('a[href="/search/subjAttendReport.htm"]')).sendKeys('1', Key.ENTER)
 
     // Setting the date
     function setDate() {
-        document.getElementsByName("fromDate")[0].value = "03/07/2021"
-        document.getElementsByName("toDate")[0].value = "15/12/2021"
+        const currentYear = new Date().getFullYear()
+        if (new Date().getMonth() >= 6){
+            document.getElementsByName("fromDate")[0].value = "01/06/2021"
+            document.getElementsByName("toDate")[0].value = "31/12/2021"
+        }
+        
     }
     await driver.executeScript(setDate)
 
@@ -25,13 +28,13 @@ const attendance = async (rollNumber, password) => {
     await driver.findElement(By.css('input[type="submit"]')).sendKeys('1', Key.ENTER)
 
     // Promise resolve with the document
-    return driver.executeScript("return document.documentElement.outerHTML").then(
+    const finalData = await driver.executeScript("return document.documentElement.outerHTML").then(
         res => {
-            console.log(attendanceFinal(res))
             return attendanceFinal(res)
         }
     )
-
+    driver.quit()
+    return finalData;   
 }
 
 function attendanceFinal(res) {
@@ -75,6 +78,7 @@ function attendanceObjectMaker(subjects) {
             subjects[sub].above = false
             subjects[sub].numberOfClassesToAttend = ans
         }
+        subjects[sub].attendancePercentage=val.totalHoursPresent/val.totalHours * 100
     }
 
     return subjects
