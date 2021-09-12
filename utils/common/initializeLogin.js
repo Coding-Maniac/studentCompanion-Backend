@@ -44,6 +44,7 @@ const initializeLogin = async (rollNumber, password) => {
     // Initializing the driver
     let driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build()
     driver.manage().window().minimize()
+    
     await driver.get('https://studentportal.hindustanuniv.ac.in');
 
     // Entering Username
@@ -54,20 +55,23 @@ const initializeLogin = async (rollNumber, password) => {
 
     // Hitting the Sign-in Button
     await driver.findElement(By.css('button[onclick="signIn(\'HITS\')"]')).sendKeys('1', Key.ENTER)
+
     const cookieObj = {}
+
     await driver.manage().getCookies().then(cookies => {
         for(let cookie of cookies){
             cookieObj[cookie.name] = cookie.value
         }
     })
+
     const returnObj = {
         driver: driver,
         cookieObj
     }
+
     return returnObj;
 }
 
 module.exports = {
     wrapper
 }
-// view tds client name, start date, end date

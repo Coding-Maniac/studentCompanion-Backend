@@ -1,42 +1,32 @@
 const axios = require("axios")
 const { default: Cheerio } = require('cheerio');
 axios.defaults.withCredentials = true
-const login = require('./common/initializeLogin')
-const attendanceProcessor = require('./common/attendanceProcessor')
-const attendance = async (rollNumber, password) => {
-    const { driver, cookieObj } = await login.wrapper(rollNumber, password)
-    let cookieString = ""
-    for (let i in cookieObj) {
-        cookieString += i
-        cookieString += "="
-        cookieString += cookieObj[i]
-        cookieString += "; "
-    }
-    driver.quit()
-    //classId - 668
-    // studIdhid - 582
-    // batchID - 3988
-    // fromDate - 01/07/2021
-    //  toDate - 30/09/2021
-    // generate - Search
 
+const login = require('./common/initializeLogin')
+const loginV2 = require('./common/intializeLoginV2')
+const attendanceProcessor = require('./common/attendanceProcessor')
+
+const attendance = async (rollNumber, password) => {
+
+    const {error, cookieString} = await loginV2(rollNumber, password) 
+
+    if(error){
+        return{error}
+    }
+    console.log(cookieString)
+    // Setting Up the base url for ERP config
     const erpConfig = axios.create({
         baseURL: "https://studentportal.hindustanuniv.ac.in/search",
         headers: {
             Cookie: cookieString
         }
     })
-    //   axios.default.headers.cookie =cookieString;
-    const getInitialAttendanceDetails = async () => {
-        const formVal = await erpConfig.get("https://studentportal.hindustanuniv.ac.in/search/subjAttendReport.htm").then(res => {
-            // console.log(res.data)
-            const formData = setFormData(res.data)
-            return formData
-        })
-        return formVal
-    }
 
-    const setFormData = (html) => {
+     /**
+     * Fomat of FormData that needs to be sent in the POST request
+     * This is called along with the GET request
+     */
+      const setFormData = (html) => {
         const $ = Cheerio.load(html)
         const studentId = $('input[id="form1_studIdhid"]').val()
         const classId = $('#form1_classId').val()
@@ -52,27 +42,38 @@ const attendance = async (rollNumber, password) => {
         })
 
         return formData
-
     }
+
+    /**
+     * Fetches the Course Wise attendance html
+     * @returns formData 
+     */
+    const getInitialAttendanceDetails = async () => {
+        return await erpConfig.get("https://studentportal.hindustanuniv.ac.in/search/subjAttendReport.htm").then(res => {
+            return setFormData(res.data)
+        })
+    }
+
+    /**
+     * @param  formData
+     * Makes a post request to the ERP Course Wise Attendance with fomData 
+     * @returns attendanceJson
+     */
     const fetchAttendanceDetails = async (formData) => {
-        const finalData = await erpConfig.post("https://studentportal.hindustanuniv.ac.in/search/subjAttendReport.htm", formData, {
+        return await erpConfig.post("https://studentportal.hindustanuniv.ac.in/search/subjAttendReport.htm", formData, {
             withCredentials: true
         }).then(res => {
-            const val=  attendanceProcessor(res.data)
-            return val
+            return attendanceProcessor(res.data)
         })
-        return finalData
     }
     
-    const initiateProcess = async () => {
-        const formVal = await getInitialAttendanceDetails()
-        console.log(formVal)
-        const finalObj = await fetchAttendanceDetails(formVal)
-        console.log(finalObj)
-        return finalObj
-    }
-    return initiateProcess()
-
+    /**
+     * Function to initiate the GET and POST request to ERP for fetching attendance
+     * @returns attendanceObj
+     */
+    const formData = await getInitialAttendanceDetails()
+    const attendanceValues = await fetchAttendanceDetails(formData)
+    return attendanceValues
 }
 
 module.exports = attendance
