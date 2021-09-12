@@ -20,7 +20,7 @@ app.post('/attendance', (req, res) => {
     if (!req.body.rollNumber || !req.body.password) {
         res.status(400)
         return res.send({
-            error: "Login and Password Must be provided"
+            error: "Login and Password Is Incorrect"
         })
     }
     else {

@@ -1,107 +1,78 @@
+const axios = require("axios")
 const { default: Cheerio } = require('cheerio');
-const { By, Key } = require('selenium-webdriver');
+axios.defaults.withCredentials = true
 const login = require('./common/initializeLogin')
-
+const attendanceProcessor = require('./common/attendanceProcessor')
 const attendance = async (rollNumber, password) => {
-
-    let { driver } = await login.wrapper(rollNumber, password)
-
-    // Opening the dropdown for timetable
-    await driver.findElement(By.css('li[class="dropdown"]:nth-of-type(3) a')).sendKeys('1', Key.ENTER)
-
-
-    // Selecting the time table
-    await driver.findElement(By.css('a[href="/search/subjAttendReport.htm"]')).sendKeys('1', Key.ENTER)
-
-    // Setting the date
-    function setDate() {
-        const currentYear = new Date().getFullYear()
-        console.log(currentYear)
-        if (new Date().getMonth() >= 6){
-            document.getElementsByName("fromDate")[0].value = `01/06/${currentYear}`
-            document.getElementsByName("toDate")[0].value = `31/12/${currentYear}`
-        } else {
-            document.getElementsByName("fromDate")[0].value = `01/01/${currentYear}`
-            document.getElementsByName("toDate")[0].value = `31/05/${currentYear}`
-        }
-        
+    const { driver, cookieObj } = await login.wrapper(rollNumber, password)
+    let cookieString = ""
+    for (let i in cookieObj) {
+        cookieString += i
+        cookieString += "="
+        cookieString += cookieObj[i]
+        cookieString += "; "
     }
-    await driver.executeScript(setDate)
-
-    // Submitting the form
-    await driver.findElement(By.css('input[type="submit"]')).sendKeys('1', Key.ENTER)
-
-    // Promise resolve with the document
-    const finalData = await driver.executeScript("return document.documentElement.outerHTML").then(
-        res => {
-            return attendanceFinal(res)
-        }
-    )
     driver.quit()
-    return finalData;   
-}
+    //classId - 668
+    // studIdhid - 582
+    // batchID - 3988
+    // fromDate - 01/07/2021
+    //  toDate - 30/09/2021
+    // generate - Search
 
-function attendanceFinal(res) {
-
-    // Loading the document in cheerio
-    let $ = Cheerio.load(res);
-    let numberOfSubjects = $('div[id="tableDetailDiv"] tbody tr').toArray().length
-    let subjects = {}
-
-    // Looping by the DOM Elements to fetch the subject
-    for (let i = 1; i <= numberOfSubjects; i++) {
-        let subjName = $(`div[id="tableDetailDiv"] tbody tr:nth-of-type(${i}) td:nth-of-type(1)`).text()
-        let totalHours = $(`div[id="tableDetailDiv"] tbody tr:nth-of-type(${i}) td:nth-of-type(2)`).text()
-        let totalHoursPresent = $(`div[id="tableDetailDiv"] tbody tr:nth-of-type(${i}) td:nth-of-type(3)`).text()
-        subjects[subjName] = {
-            totalHours,
-            totalHoursPresent
+    const erpConfig = axios.create({
+        baseURL: "https://studentportal.hindustanuniv.ac.in/search",
+        headers: {
+            Cookie: cookieString
         }
+    })
+    //   axios.default.headers.cookie =cookieString;
+    const getInitialAttendanceDetails = async () => {
+        const formVal = await erpConfig.get("https://studentportal.hindustanuniv.ac.in/search/subjAttendReport.htm").then(res => {
+            // console.log(res.data)
+            const formData = setFormData(res.data)
+            return formData
+        })
+        return formVal
     }
 
-    let updatedSubjects = attendanceObjectMaker(subjects);
-    return updatedSubjects
-}
+    const setFormData = (html) => {
+        const $ = Cheerio.load(html)
+        const studentId = $('input[id="form1_studIdhid"]').val()
+        const classId = $('#form1_classId').val()
+        const batchId = $('#form1_batchId').val()
+        const formData = new URLSearchParams({
+            form_name: 'form1',
+            classId: classId,
+            studIdhid: studentId,
+            batchID: batchId,
+            fromDate: '01/07/2021',
+            toDate: '30/09/2021',
+            generate: 'Search'
+        })
 
-function attendanceObjectMaker(subjects) {
+        return formData
 
-    // Processing the subjects
-    for (let sub in subjects) {
-
-        let val = subjects[sub]
-
-        // Checking the attendance
-        let ans = attendanceFinder(val.totalHours, val.totalHoursPresent)
-
-        // Adding the value to the object
-        if (ans === false) {
-            subjects[sub].above = true
-        }
-
-        else {
-            subjects[sub].above = false
-            subjects[sub].numberOfClassesToAttend = ans
-        }
-        subjects[sub].attendancePercentage=val.totalHoursPresent/val.totalHours * 100
     }
-
-    return subjects
-}
-
-function attendanceFinder(totalClasses, AttendedClasses) {
-
-    // Logic for finding attendance
-    let attendance = AttendedClasses / totalClasses
-
-    if (attendance >= 0.75) {
-        return false
+    const fetchAttendanceDetails = async (formData) => {
+        const finalData = await erpConfig.post("https://studentportal.hindustanuniv.ac.in/search/subjAttendReport.htm", formData, {
+            withCredentials: true
+        }).then(res => {
+            const val=  attendanceProcessor(res.data)
+            return val
+        })
+        return finalData
     }
+    
+    const initiateProcess = async () => {
+        const formVal = await getInitialAttendanceDetails()
+        console.log(formVal)
+        const finalObj = await fetchAttendanceDetails(formVal)
+        console.log(finalObj)
+        return finalObj
+    }
+    return initiateProcess()
 
-    let numberOfClassesToAttend = (totalClasses * 0.75) - AttendedClasses;
-    return Math.ceil(numberOfClassesToAttend);
 }
 
 module.exports = attendance
-// attendance(18113075, 123456)
-
-

@@ -43,7 +43,7 @@ const wrapper = (rollNumber, password) => initializeLogin(rollNumber, password)
 const initializeLogin = async (rollNumber, password) => {
     // Initializing the driver
     let driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build()
-    // driver.manage().window().minimize()
+    driver.manage().window().minimize()
     await driver.get('https://studentportal.hindustanuniv.ac.in');
 
     // Entering Username
@@ -56,15 +56,9 @@ const initializeLogin = async (rollNumber, password) => {
     await driver.findElement(By.css('button[onclick="signIn(\'HITS\')"]')).sendKeys('1', Key.ENTER)
     const cookieObj = {}
     await driver.manage().getCookies().then(cookies => {
-        // for (let cookie in  cookies){
-
-        //     console.log(cookie)
-        //     cookieObj[cookie] = cookies[cookie]
-        // }
         for(let cookie of cookies){
             cookieObj[cookie.name] = cookie.value
         }
-        console.log(cookieObj)
     })
     const returnObj = {
         driver: driver,
