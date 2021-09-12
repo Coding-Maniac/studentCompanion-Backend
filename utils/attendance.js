@@ -2,13 +2,12 @@ const axios = require("axios")
 const { default: Cheerio } = require('cheerio');
 axios.defaults.withCredentials = true
 
-const login = require('./common/initializeLogin')
-const loginV2 = require('./common/intializeLoginV2')
+const login = require('./common/intializeLoginV2')
 const attendanceProcessor = require('./common/attendanceProcessor')
 
 const attendance = async (rollNumber, password) => {
 
-    const {error, cookieString} = await loginV2(rollNumber, password) 
+    const {error, cookieString} = await login(rollNumber, password) 
 
     if(error){
         return{error}
