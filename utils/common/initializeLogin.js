@@ -54,8 +54,23 @@ const initializeLogin = async (rollNumber, password) => {
 
     // Hitting the Sign-in Button
     await driver.findElement(By.css('button[onclick="signIn(\'HITS\')"]')).sendKeys('1', Key.ENTER)
+    const cookieObj = {}
+    await driver.manage().getCookies().then(cookies => {
+        // for (let cookie in  cookies){
 
-    return driver
+        //     console.log(cookie)
+        //     cookieObj[cookie] = cookies[cookie]
+        // }
+        for(let cookie of cookies){
+            cookieObj[cookie.name] = cookie.value
+        }
+        console.log(cookieObj)
+    })
+    const returnObj = {
+        driver: driver,
+        cookieObj
+    }
+    return returnObj;
 }
 
 module.exports = {

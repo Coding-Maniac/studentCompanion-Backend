@@ -4,7 +4,7 @@ const login = require('./common/initializeLogin')
 
 const attendance = async (rollNumber, password) => {
 
-    let driver = await login.wrapper(rollNumber, password)
+    let { driver } = await login.wrapper(rollNumber, password)
 
     // Opening the dropdown for timetable
     await driver.findElement(By.css('li[class="dropdown"]:nth-of-type(3) a')).sendKeys('1', Key.ENTER)
@@ -16,9 +16,13 @@ const attendance = async (rollNumber, password) => {
     // Setting the date
     function setDate() {
         const currentYear = new Date().getFullYear()
+        console.log(currentYear)
         if (new Date().getMonth() >= 6){
-            document.getElementsByName("fromDate")[0].value = "01/06/2021"
-            document.getElementsByName("toDate")[0].value = "31/12/2021"
+            document.getElementsByName("fromDate")[0].value = `01/06/${currentYear}`
+            document.getElementsByName("toDate")[0].value = `31/12/${currentYear}`
+        } else {
+            document.getElementsByName("fromDate")[0].value = `01/01/${currentYear}`
+            document.getElementsByName("toDate")[0].value = `31/05/${currentYear}`
         }
         
     }
