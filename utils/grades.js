@@ -1,15 +1,11 @@
 // const { default: Cheerio } = require('cheerio');
 // const { Builder, By, Key } = require('selenium-webdriver');
-// // const login = require('./common/initializeLogin')
-// const { data } = require('cheerio/lib/api/attributes');
+// const login = require('./common/initializeLogin')
 // const fs = require('fs')
 // // Grades Object 
 // const gradesObject = {}
 
 // const grades = async (rollNumber, password) => {
-//     let driver = await login.wrapper(rollNumber, password)
-
-//     // Opening the dropdown for Gradee
 //     let academics = driver.findElement(By.css('li[class="dropdown"]:nth-of-type(3) a'))
 //     await academics.sendKeys('1', Key.ENTER)
 
