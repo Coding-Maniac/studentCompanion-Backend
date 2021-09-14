@@ -22,7 +22,7 @@ app.post('/attendance', (req, res) => {
     if (!req.body.rollNumber || !req.body.password) {
         res.status(400)
         return res.send({
-            error: "Login and Password Is Incorrect"
+            error: "Provide both Login and Password"
         })
     }
     else {
@@ -40,7 +40,18 @@ app.post('/attendance', (req, res) => {
 })
 
 app.post('/grades', (req, res) => {
-    grades(18113075, 123456).then((val) => res.send(val))
+    if (!req.body.rollNumber || !req.body.password) {
+        res.status(400)
+        return res.send({
+            error: "Login and Password Is Incorrect"
+        })
+    }
+    const { rollNumber, password } = req.body
+    console.log(req.body)
+    grades(rollNumber, password).then((val) => {
+        // console.log(val)
+        res.send(val)
+    })
     // console.log(req.body)
 })
 

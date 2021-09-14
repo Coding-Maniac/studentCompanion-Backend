@@ -38,11 +38,11 @@ function attendanceObjectMaker(subjects) {
 
         // Adding the value to the object
         if (ans === false) {
-            subjects[sub].above = true
+            subjects[sub].safe = true
         }
 
         else {
-            subjects[sub].above = false
+            subjects[sub].safe = false
             subjects[sub].numberOfClassesToAttend = ans
         }
         subjects[sub].attendancePercentage = val.totalHoursPresent / val.totalHours * 100

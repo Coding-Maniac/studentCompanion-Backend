@@ -17,6 +17,7 @@ const initializeLogin = async (rollNumber, password) => {
             cookieString += cookieObj[i]
             cookieString += "; "
         }
+        console.log(cookieString)
         return cookieString
     }
 
@@ -55,4 +56,5 @@ const initializeLogin = async (rollNumber, password) => {
     return await authorizeCookies(cookieString)
 }
 
+// initializeLogin(18113075, 123456)
 module.exports = initializeLogin
