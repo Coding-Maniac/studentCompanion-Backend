@@ -1,7 +1,7 @@
 const initializeLogin = require("./common/intializeLogin")
 const axios = require("axios");
 const gradeProcessor = require("./common/gradesProcessor")
-const grades = async (rollNumber, password) => {
+const grades = async (rollNumber, password, semesterId) => {
     // form_name : form
     // semester: 1
     // search: Search
@@ -20,8 +20,7 @@ const grades = async (rollNumber, password) => {
     })
 
     const finalGradesObject = []
-    for(let i = 1 ;  i < 9 ; i++){
-        console.log(`Semester ${i}`)
+    const getGrades = async (i) => {
         const formData = (i) =>  new URLSearchParams({
             form_name: "form",
             semester: i,
@@ -33,8 +32,23 @@ const grades = async (rollNumber, password) => {
             finalGradesObject.push(gradeProcessor(res.data,i))
         })
     }
+    /**
+     * If semesterID is provided fetch only the particular semester
+     * Else
+     * Fetch all the semester details
+     */
+    if(semesterId){
+        console.log(semesterId)
+        await getGrades(semesterId)
+    } else {
+        for(let i = 1 ;  i < 9 ; i++){
+            console.log(`Semester ${i}`)
+            await getGrades(i)
+        }
+    }
+    
     // console.log(finalGradesObject)
-    return finalGradesObject    
+    return finalGradesObject
 }
 
 // grades(18113075, 123456)

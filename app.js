@@ -18,7 +18,6 @@ app.get('/', function (req, res) {
 })
 
 app.post('/attendance', (req, res) => {
-    console.log(req.body)
     if (!req.body.rollNumber || !req.body.password) {
         res.status(400)
         return res.send({
@@ -49,10 +48,23 @@ app.post('/grades', (req, res) => {
     const { rollNumber, password } = req.body
     console.log(req.body)
     grades(rollNumber, password).then((val) => {
-        // console.log(val)
         res.send(val)
     })
-    // console.log(req.body)
+})
+
+app.post('/grades/:semesterId', (req, res) => {
+    if (!req.body.rollNumber || !req.body.password) {
+        res.status(400)
+        return res.send({
+            error: "Login and Password Is Incorrect"
+        })
+    }
+    const { rollNumber, password } = req.body
+    const { semesterId } = req.params
+    console.log(req.body)
+    grades(rollNumber, password, semesterId).then((val) => {
+        res.send(val)
+    })
 })
 
 app.listen(port, () => {
