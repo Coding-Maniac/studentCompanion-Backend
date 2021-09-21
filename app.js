@@ -28,7 +28,15 @@ app.post('/attendance', (req, res) => {
         let rollNumber = req.body.rollNumber
         let password = req.body.password
         attendance(rollNumber, password).then((attendanceObj) => {
-            return res.send(attendanceObj)
+            const response =  attendanceObj
+            if(response.error){
+                res.status(404)
+                return res.send({
+                    error: "Kindly Check your Roll Number and Password"
+                })
+            } else {
+                res.send(response)
+            }
         }).catch((err) => {
             res.status(404)
             res.send({
@@ -46,7 +54,6 @@ app.post('/grades', (req, res) => {
         })
     }
     const { rollNumber, password } = req.body
-    console.log(req.body)
     grades(rollNumber, password).then((val) => {
         res.send(val)
     })

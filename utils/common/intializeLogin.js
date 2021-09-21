@@ -17,7 +17,6 @@ const initializeLogin = async (rollNumber, password) => {
             cookieString += cookieObj[i]
             cookieString += "; "
         }
-        console.log(cookieString)
         return cookieString
     }
 
