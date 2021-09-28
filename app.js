@@ -2,8 +2,11 @@ const express = require('express');
 const app = express()
 const attendance = require('./utils/attendance')
 const grades = require('./utils/grades')
+const authorize = require('./utils/authorize')
+
 app.use(express.json())
-var compression = require('compression')
+var compression = require('compression');
+const { response } = require('express');
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -15,6 +18,25 @@ const port = process.env.PORT || 3030
 
 app.get('/', function (req, res) {
     res.send(`Hello World from host ERP API!`)
+})
+
+app.post('/authorize', (req, res) => {
+    const { body } = req;
+    const { rollNumber, password } = body
+
+    if(rollNumber && password){
+        authorize(rollNumber, password).then(response => {
+            const { error } = response
+            if(error){
+                res.status(400)
+                return res.send({error})
+            }
+            return res.send(response)
+        }).catch(err => {
+            res.status(400)
+            return res.send(err)
+        }) 
+    }
 })
 
 app.post('/attendance', (req, res) => {
