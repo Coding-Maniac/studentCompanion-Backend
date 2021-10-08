@@ -5,6 +5,8 @@ const grades = async (rollNumber, password, semesterId) => {
     // form_name : form
     // semester: 1
     // search: Search
+    console.log("Here")
+    console.log(rollNumber, password)
     const { error, cookieString } = await initializeLogin(rollNumber, password);
 
     if(error){
@@ -38,16 +40,13 @@ const grades = async (rollNumber, password, semesterId) => {
      * Fetch all the semester details
      */
     if(semesterId){
-        console.log(semesterId)
         await getGrades(semesterId)
     } else {
         for(let i = 1 ;  i < 9 ; i++){
-            console.log(`Semester ${i}`)
             await getGrades(i)
         }
     }
-    
-    // console.log(finalGradesObject)
+
     return finalGradesObject
 }
 

@@ -7,6 +7,7 @@ const authorize = require('./utils/authorize')
 app.use(express.json())
 var compression = require('compression');
 const { response } = require('express');
+const totalGrades = require('./utils/totalGrades');
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -92,6 +93,34 @@ app.post('/grades/:semesterId', (req, res) => {
     const { semesterId } = req.params
     console.log(req.body)
     grades(rollNumber, password, semesterId).then((val) => {
+        res.send(val)
+    })
+})
+
+app.post('/grades-count', (req, res) => {
+    if (!req.body.rollNumber || !req.body.password) {
+        res.status(400)
+        return res.send({
+            error: "Login and Password Is Incorrect"
+        })
+    }
+    const { rollNumber, password } = req.body
+    totalGrades(rollNumber, password).then((val) => {
+        res.send(val)
+    })
+})
+
+app.post('/grades-count/:semesterId', (req, res) => {
+    if (!req.body.rollNumber || !req.body.password) {
+        res.status(400)
+        return res.send({
+            error: "Login and Password Is Incorrect"
+        })
+    }
+    const { rollNumber, password } = req.body
+    const { semesterId } = req.params
+    console.log(req.body)
+    totalGrades(rollNumber, password, semesterId).then((val) => {
         res.send(val)
     })
 })
