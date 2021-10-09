@@ -5,8 +5,6 @@ const grades = async (rollNumber, password, semesterId) => {
     // form_name : form
     // semester: 1
     // search: Search
-    console.log("Here")
-    console.log(rollNumber, password)
     const { error, cookieString } = await initializeLogin(rollNumber, password);
 
     if(error){

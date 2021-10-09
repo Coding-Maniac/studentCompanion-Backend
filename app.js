@@ -6,10 +6,10 @@ const authorize = require('./utils/authorize')
 
 app.use(express.json())
 var compression = require('compression');
-const { response } = require('express');
 const totalGrades = require('./utils/totalGrades');
+
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "https://scholarbuddy.netlify.app/");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
