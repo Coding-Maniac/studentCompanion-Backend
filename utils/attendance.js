@@ -7,10 +7,10 @@ const attendanceProcessor = require('./common/attendanceProcessor')
 
 const attendance = async (rollNumber, password) => {
 
-    const {error, cookieString} = await login(rollNumber, password) 
+    const { error, cookieString } = await login(rollNumber, password)
 
-    if(error){
-        return{error}
+    if (error) {
+        return { error }
     }
     // Setting Up the base url for ERP config
     const erpConfig = axios.create({
@@ -20,22 +20,32 @@ const attendance = async (rollNumber, password) => {
         }
     })
 
-     /**
-     * Fomat of FormData that needs to be sent in the POST request
-     * This is called along with the GET request
-     */
-      const setFormData = (html) => {
+    /**
+    * Fomat of FormData that needs to be sent in the POST request
+    * This is called along with the GET request
+    */
+    const setFormData = (html) => {
         const $ = Cheerio.load(html)
         const studentId = $('input[id="form1_studIdhid"]').val()
         const classId = $('#form1_classId').val()
         const batchId = $('#form1_batchId').val()
+
+        const currentYear = new Date().getFullYear()
+        let fromDate, toDate;
+        if (new Date().getMonth() >= 6) {
+            fromDate = `01/06/${currentYear}`
+            toDate = `31/12/${currentYear}`
+        } else {
+            fromDate = `01/01/${currentYear}`
+            toDate = `31/05/${currentYear}`
+        }
         const formData = new URLSearchParams({
             form_name: 'form1',
             classId: classId,
             studIdhid: studentId,
             batchID: batchId,
-            fromDate: '01/07/2021',
-            toDate: '30/09/2021',
+            fromDate: fromDate,
+            toDate: toDate,
             generate: 'Search'
         })
 
@@ -64,7 +74,7 @@ const attendance = async (rollNumber, password) => {
             return attendanceProcessor(res.data)
         })
     }
-    
+
     /**
      * Function to initiate the GET and POST request to ERP for fetching attendance
      * @returns attendanceObj
