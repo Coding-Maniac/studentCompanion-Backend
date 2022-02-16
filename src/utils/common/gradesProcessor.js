@@ -1,5 +1,4 @@
-const cheerio = require("cheerio")
-
+import { Cheerio } from "cheerio";
 const gradesProcessor = (grades, i) => {
     const gradesObject = {}
     // Load the document in Cheerio
@@ -44,4 +43,4 @@ const gradesProcessor = (grades, i) => {
     // console.log(gradesObject)
 }
 
-module.exports = gradesProcessor
+export default gradesProcessor

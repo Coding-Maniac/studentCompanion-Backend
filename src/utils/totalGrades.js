@@ -35,4 +35,4 @@ const totalGrades = async (rollNumber, password, semesterId) => {
     return gradesCount
 }
 
-module.exports = totalGrades
+export default totalGrades

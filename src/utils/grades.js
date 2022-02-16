@@ -1,6 +1,5 @@
-const initializeLogin = require("./common/intializeLogin")
-const axios = require("axios");
-const gradeProcessor = require("./common/gradesProcessor")
+import axios from "axios";
+import gradeProcessor from './common/gradesProcessor'
 const grades = async (auth_token, rollNumber, password, semesterId) => {
     // form_name : form
     // semester: 1
@@ -44,4 +43,4 @@ const grades = async (auth_token, rollNumber, password, semesterId) => {
 }
 
 // grades(18113075, 123456)
-module.exports = grades
+export default grades

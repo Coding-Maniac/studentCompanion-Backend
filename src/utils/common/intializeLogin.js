@@ -1,5 +1,4 @@
-const axios = require("axios")
-
+import axios from "axios"
 const initializeLogin = async (rollNumber, password) => {
 
     const getCookiesString = (cookieArr) => {
@@ -56,4 +55,4 @@ const initializeLogin = async (rollNumber, password) => {
 }
 
 // initializeLogin(18113075, 123456)
-module.exports = initializeLogin
+export default initializeLogin
