@@ -4,12 +4,12 @@ import attendance from './utils/attendance.js'
 import grades from './utils/grades'
 import authorize from './utils/authorize'
 import connect from './connect'
+import totalGrades from './utils/totalGrades'
 
 const app = express()
 // const gradesRouter = require('./resources/grades/grades.router')
 app.use(express.json())
 var compression = require('compression')
-const totalGrades = require('./utils/totalGrades')
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -52,7 +52,7 @@ app.post('/authorize',(req, res) => {
   }
 })
 
-app.post('/attendance', (req, res) => {
+app.post('/attendance', async (req, res) => {
   if (!req.body.rollNumber || !req.body.password) {
     res.status(400)
     return res.send({
@@ -135,7 +135,7 @@ app.post('/grades/:semesterId', (req, res) => {
   }
 })
 
-app.post('/grades-count', (req, res) => {
+app.post('/grades-count', async (req, res) => {
   if (!req.body.rollNumber || !req.body.password) {
     res.status(400)
     return res.send({
@@ -145,7 +145,7 @@ app.post('/grades-count', (req, res) => {
   const { rollNumber, password } = req.body
   const authToken = appHandleAuthorization(req, res)
   if (authToken) {
-    totalGrades(rollNumber, password)
+    totalGrades(authToken, rollNumber, password)
       .then(val => {
         res.send(val)
       })
@@ -170,7 +170,7 @@ app.post('/grades-count/:semesterId', (req, res) => {
   const { semesterId } = req.params
   const authToken = appHandleAuthorization(req, res)
   if (authToken) {
-    totalGrades(rollNumber, password, semesterId)
+    totalGrades(authToken, rollNumber, password, semesterId)
       .then(val => {
         res.send(val)
       })

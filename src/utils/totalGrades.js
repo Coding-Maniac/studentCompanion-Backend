@@ -1,4 +1,4 @@
-const grades = require("./grades")
+import grades from "./grades"
 
 /**
  * Maps over the grades result from the "grades" function
@@ -6,8 +6,9 @@ const grades = require("./grades")
  */
 
 
-const totalGrades = async (rollNumber, password, semesterId) => {
-    const gradesFinalObj = await grades(rollNumber, password, semesterId)
+const totalGrades = async (auth_token, rollNumber, password, semesterId) => {
+    const gradesFinalObj = await grades(auth_token, rollNumber, password, semesterId)
+    console.log("Grades Final Obj", gradesFinalObj)
     const gradesCount = {}
     // Map over Grades Final Obj
     for (let i in gradesFinalObj){
@@ -32,6 +33,7 @@ const totalGrades = async (rollNumber, password, semesterId) => {
 
         })
     }
+    console.log("Grades Count", gradesCount)
     return gradesCount
 }
 

@@ -1,11 +1,9 @@
 // const axios = require("axios")
 // const { default: Cheerio } = require('cheerio');
 import axios from "axios"
-import { Cheerio } from "cheerio"
+import Cheerio from "cheerio"
+import attendanceProcessor from './common/attendanceProcessor'
 axios.defaults.withCredentials = true
-
-const login = require('./common/intializeLogin')
-const attendanceProcessor = require('./common/attendanceProcessor')
 
 const attendance = async (auth_token, rollNumber, password) => {
 

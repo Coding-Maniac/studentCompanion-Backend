@@ -4,7 +4,7 @@
  * */
 
 // const { default: Cheerio } = require('cheerio')
-import { Cheerio } from 'cheerio'
+import Cheerio from 'cheerio'
 const attendanceFinal = res => {
   // Loading the document in cheerio
   let $ = Cheerio.load(res)

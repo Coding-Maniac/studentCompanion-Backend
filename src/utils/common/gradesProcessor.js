@@ -1,4 +1,4 @@
-import { Cheerio } from "cheerio";
+import cheerio from "cheerio";
 const gradesProcessor = (grades, i) => {
     const gradesObject = {}
     // Load the document in Cheerio
