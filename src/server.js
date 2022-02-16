@@ -4,7 +4,7 @@ const attendance = require('./utils/attendance')
 const grades = require('./utils/grades')
 const authorize = require('./utils/authorize')
 const connect  = require('./connect')
-
+const gradesRouter = require('./resources/grades/grades.router')
 app.use(express.json())
 var compression = require('compression');
 const totalGrades = require('./utils/totalGrades');
