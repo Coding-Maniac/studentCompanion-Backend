@@ -5,18 +5,12 @@ axios.defaults.withCredentials = true
 const login = require('./common/intializeLogin')
 const attendanceProcessor = require('./common/attendanceProcessor')
 
-const attendance = async (rollNumber, password) => {
+const attendance = async (auth_token, rollNumber, password) => {
 
-    const { error, cookieString } = await login(rollNumber, password)
-
-    if (error) {
-        return { error }
-    }
-    // Setting Up the base url for ERP config
     const erpConfig = axios.create({
         baseURL: "https://studentportal.hindustanuniv.ac.in/search",
         headers: {
-            Cookie: cookieString
+            Cookie: auth_token
         }
     })
 

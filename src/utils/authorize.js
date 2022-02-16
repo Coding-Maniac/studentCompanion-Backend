@@ -9,7 +9,7 @@ const authorize = async (rollNumber, password) => {
         }
     }
     return {
-        success: true,
+        token: cookieString,
     }
 }
 

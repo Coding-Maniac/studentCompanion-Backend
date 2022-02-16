@@ -1,21 +1,16 @@
 const initializeLogin = require("./common/intializeLogin")
 const axios = require("axios");
 const gradeProcessor = require("./common/gradesProcessor")
-const grades = async (rollNumber, password, semesterId) => {
+const grades = async (auth_token, rollNumber, password, semesterId) => {
     // form_name : form
     // semester: 1
     // search: Search
-    const { error, cookieString } = await initializeLogin(rollNumber, password);
-
-    if(error){
-        return {error}
-    }
 
     // Setting Up the base URL for ERP Config
     const erpConfig = axios.create({
         baseURL: "https://studentportal.hindustanuniv.ac.in/search",
         headers: {
-            Cookie: cookieString
+            Cookie: auth_token
         }
     })
 
