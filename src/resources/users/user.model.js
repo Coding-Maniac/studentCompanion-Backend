@@ -23,8 +23,9 @@ const userSchema = new mongoose.Schema({
         type: Number
     },
     section: {
-        type: Number
+        type: String
     }
 })
 
-export const User = mongoose.model('user', userSchema)
+const User = mongoose.model('user', userSchema)
+export default User

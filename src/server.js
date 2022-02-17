@@ -5,7 +5,7 @@ import grades from './utils/grades'
 import authorize from './utils/authorize'
 import connect from './connect'
 import totalGrades from './utils/totalGrades'
-
+import { SignUp } from './utils/userAuth.js'
 const app = express()
 // const gradesRouter = require('./resources/grades/grades.router')
 app.use(express.json())
@@ -26,6 +26,8 @@ const port = process.env.PORT || 3030
 app.get('/', function(req, res) {
   res.send(`Hello World from host ERP API!`)
 })
+
+app.post('/signup', SignUp)
 
 app.post('/authorize',(req, res) => {
   console.log("In Authorize")
