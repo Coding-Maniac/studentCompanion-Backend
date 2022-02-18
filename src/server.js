@@ -6,8 +6,8 @@ import authorize from './utils/authorize'
 import connect from './connect'
 import totalGrades from './utils/totalGrades'
 import { SignUp } from './utils/userAuth.js'
+import gradesRouter from './resources/grades/grades.router'
 const app = express()
-// const gradesRouter = require('./resources/grades/grades.router')
 app.use(express.json())
 var compression = require('compression')
 
@@ -23,6 +23,7 @@ app.use(function(req, res, next) {
 app.use(compression())
 const port = process.env.PORT || 3030
 
+app.use('/grades', gradesRouter)
 app.get('/', function(req, res) {
   res.send(`Hello World from host ERP API!`)
 })
@@ -30,7 +31,6 @@ app.get('/', function(req, res) {
 app.post('/signup', SignUp)
 
 app.post('/authorize',(req, res) => {
-  console.log("In Authorize")
   const { body } = req
   const { rollNumber, password } = body
   console.log("Roll Number", rollNumber)
@@ -85,104 +85,6 @@ app.post('/attendance', async (req, res) => {
           })
         })
     }
-  }
-})
-
-app.post('/grades', (req, res) => {
-  if (!req.body.rollNumber || !req.body.password) {
-    res.status(400)
-    return res.send({
-      error: 'Login and Password Is Incorrect'
-    })
-  }
-  const { rollNumber, password } = req.body
-  const authToken = appHandleAuthorization(req, res)
-  if (authToken) {
-    grades(authToken, rollNumber, password)
-      .then(val => {
-        res.send(val)
-      })
-      .catch(err => {
-        res.status(404)
-        res.send({
-          error: 'No Grades Found',
-          error_value: err
-        })
-      })
-  }
-})
-
-app.post('/grades/:semesterId', (req, res) => {
-  if (!req.body.rollNumber || !req.body.password) {
-    res.status(400)
-    return res.send({
-      error: 'Login and Password Is Incorrect'
-    })
-  }
-  const { rollNumber, password } = req.body
-  const { semesterId } = req.params
-  const authToken = appHandleAuthorization(req, res)
-  if (authToken) {
-    grades(authToken, rollNumber, password, semesterId)
-      .then(val => {
-        res.send(val)
-      })
-      .catch(err => {
-        res.status(404)
-        res.send({
-          error: 'No Grades Found',
-          error_value: err
-        })
-      })
-  }
-})
-
-app.post('/grades-count', async (req, res) => {
-  if (!req.body.rollNumber || !req.body.password) {
-    res.status(400)
-    return res.send({
-      error: 'Login and Password Is Incorrect'
-    })
-  }
-  const { rollNumber, password } = req.body
-  const authToken = appHandleAuthorization(req, res)
-  if (authToken) {
-    totalGrades(authToken, rollNumber, password)
-      .then(val => {
-        res.send(val)
-      })
-      .catch(err => {
-        res.status(404)
-        res.send({
-          error: 'No Grade Count',
-          error_value: err
-        })
-      })
-  }
-})
-
-app.post('/grades-count/:semesterId', (req, res) => {
-  if (!req.body.rollNumber || !req.body.password) {
-    res.status(400)
-    return res.send({
-      error: 'Login and Password Is Incorrect'
-    })
-  }
-  const { rollNumber, password } = req.body
-  const { semesterId } = req.params
-  const authToken = appHandleAuthorization(req, res)
-  if (authToken) {
-    totalGrades(authToken, rollNumber, password, semesterId)
-      .then(val => {
-        res.send(val)
-      })
-      .catch(err => {
-        res.status(404)
-        res.send({
-          error: 'No Grade Count',
-          error_value: err
-        })
-      })
   }
 })
 
