@@ -1,17 +1,16 @@
 import appHandleAuthorization from './utils/common/authorizationHandler.js'
-import express from 'express' 
+import express from 'express'
 import attendance from './utils/attendance.js'
-import grades from './utils/grades'
 import authorize from './utils/authorize'
 import connect from './connect'
-import totalGrades from './utils/totalGrades'
-import { SignUp } from './utils/userAuth.js'
 import gradesRouter from './resources/grades/grades.router'
+import authRouter from './resources/auth/auth.router'
+
 const app = express()
 app.use(express.json())
 var compression = require('compression')
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header(
     'Access-Control-Allow-Headers',
@@ -24,13 +23,13 @@ app.use(compression())
 const port = process.env.PORT || 3030
 
 app.use('/grades', gradesRouter)
-app.get('/', function(req, res) {
+app.use('/auth', authRouter)
+
+app.get('/', function (req, res) {
   res.send(`Hello World from host ERP API!`)
 })
 
-app.post('/signup', SignUp)
-
-app.post('/authorize',(req, res) => {
+app.post('/authorize', (req, res) => {
   const { body } = req
   const { rollNumber, password } = body
   console.log("Roll Number", rollNumber)
@@ -54,37 +53,28 @@ app.post('/authorize',(req, res) => {
   }
 })
 
-app.post('/attendance', async (req, res) => {
-  if (!req.body.rollNumber || !req.body.password) {
-    res.status(400)
-    return res.send({
-      error: 'Provide both Login and Password'
-    })
-  } else {
-    let rollNumber = req.body.rollNumber
-    let password = req.body.password
-    const authToken = appHandleAuthorization(req, res)
-    if (authToken) {
-      attendance(authToken, rollNumber, password)
-        .then(attendanceObj => {
-          const response = attendanceObj
-          if (response.error) {
-            res.status(404)
-            return res.send({
-              error: 'Kindly Check your Roll Number and Password'
-            })
-          } else {
-            res.send(response)
-          }
-        })
-        .catch(err => {
+app.get('/attendance', async (req, res) => {
+  const authToken = appHandleAuthorization(req, res)
+  if (authToken) {
+    attendance(authToken)
+      .then(attendanceObj => {
+        const response = attendanceObj
+        if (response.error) {
           res.status(404)
-          res.send({
-            error: 'Kindly Check your Roll Number And Password and Check again',
-            error_value: err
+          return res.send({
+            error: 'Kindly Check your Roll Number and Password'
           })
+        } else {
+          res.send(response)
+        }
+      })
+      .catch(err => {
+        res.status(404)
+        res.send({
+          error: 'Kindly Check your Roll Number And Password and Check again',
+          error_value: err
         })
-    }
+      })
   }
 })
 

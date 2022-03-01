@@ -5,33 +5,13 @@ import totalGrades from '../../utils/totalGrades'
 
 const router = Router()
 
-router.post('/', (req, res) => {
-    if (!req.body.rollNumber || !req.body.password) {
-        res.status(400)
-        return res.send({
-            error: "Login and Password Is Incorrect"
-        })
-    }
-    const { rollNumber, password } = req.body
-    const auth_token = appHandleAuthorization(req, res)
-    if (auth_token) {
-        grades(auth_token, rollNumber, password).then((val) => {
-            res.send(val)
-        })
-    }
-})
+// ===== GRADES COUNT =====
+router.get('/count', async (req, res) => {
 
-router.post('/count', async (req, res) => {
-  if (!req.body.rollNumber || !req.body.password) {
-    res.status(400)
-    return res.send({
-      error: 'Login and Password Is Incorrect'
-    })
-  }
-  const { rollNumber, password } = req.body
   const authToken = appHandleAuthorization(req, res)
+  console.log("In Grades Count")
   if (authToken) {
-    totalGrades(authToken, rollNumber, password)
+    totalGrades(authToken)
       .then(val => {
         res.send(val)
       })
@@ -45,18 +25,12 @@ router.post('/count', async (req, res) => {
   }
 })
 
-router.post('/count/:semesterId', (req, res) => {
-  if (!req.body.rollNumber || !req.body.password) {
-    res.status(400)
-    return res.send({
-      error: 'Login and Password Is Incorrect'
-    })
-  }
-  const { rollNumber, password } = req.body
+router.get('/count/:semesterId', (req, res) => {
   const { semesterId } = req.params
   const authToken = appHandleAuthorization(req, res)
+  console.log("In Seperate Grades")
   if (authToken) {
-    totalGrades(authToken, rollNumber, password, semesterId)
+    totalGrades(authToken, semesterId)
       .then(val => {
         res.send(val)
       })
@@ -71,18 +45,23 @@ router.post('/count/:semesterId', (req, res) => {
 })
 
 
-router.post('/:semesterId', (req, res) => {
-  if (!req.body.rollNumber || !req.body.password) {
-    res.status(400)
-    return res.send({
-      error: 'Login and Password Is Incorrect'
+
+router.get('/', (req, res) => {
+  const auth_token = appHandleAuthorization(req, res)
+  if (auth_token) {
+    grades(auth_token).then((val) => {
+      res.send(val)
     })
   }
-  const { rollNumber, password } = req.body
+})
+
+
+
+router.get('/:semesterId', (req, res) => {
   const { semesterId } = req.params
   const authToken = appHandleAuthorization(req, res)
   if (authToken) {
-    grades(authToken, rollNumber, password, semesterId)
+    grades(authToken, semesterId)
       .then(val => {
         res.send(val)
       })
@@ -95,6 +74,8 @@ router.post('/:semesterId', (req, res) => {
       })
   }
 })
+
+
 
 
 export default router;

@@ -5,7 +5,7 @@ import Cheerio from "cheerio"
 import attendanceProcessor from './common/attendanceProcessor'
 axios.defaults.withCredentials = true
 
-const attendance = async (auth_token, rollNumber, password) => {
+const attendance = async (auth_token) => {
 
     const erpConfig = axios.create({
         baseURL: "https://studentportal.hindustanuniv.ac.in/search",
