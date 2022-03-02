@@ -1,11 +1,12 @@
-const intializeLogin = require('./common/intializeLogin')
+import intializeLogin  from './common/intializeLogin'
 
 const authorize = async (rollNumber, password) => {
     const { error, cookieString } = await intializeLogin(rollNumber, password)
+    console.log("In Authorize")
 
     if(error){
         return  {
-            error
+            error: error
         }
     }
     return {
@@ -13,4 +14,4 @@ const authorize = async (rollNumber, password) => {
     }
 }
 
-module.exports = authorize
+export default authorize

@@ -1,7 +1,6 @@
-const initializeLogin = require("./common/intializeLogin")
-const axios = require("axios");
-const gradeProcessor = require("./common/gradesProcessor")
-const grades = async (auth_token, rollNumber, password, semesterId) => {
+import axios from "axios";
+import gradeProcessor from './common/gradesProcessor'
+const grades = async (auth_token, semesterId) => {
     // form_name : form
     // semester: 1
     // search: Search
@@ -16,15 +15,15 @@ const grades = async (auth_token, rollNumber, password, semesterId) => {
 
     const finalGradesObject = []
     const getGrades = async (i) => {
-        const formData = (i) =>  new URLSearchParams({
+        const formData = (i) => new URLSearchParams({
             form_name: "form",
             semester: i,
             search: "Search"
         })
-        await erpConfig.post("gradeSheet.htm",formData(i),{
+        await erpConfig.post("gradeSheet.htm", formData(i), {
             withCredentials: true
-        }).then(res =>{
-            finalGradesObject.push(gradeProcessor(res.data,i))
+        }).then(res => {
+            finalGradesObject.push(gradeProcessor(res.data, i))
         })
     }
     /**
@@ -32,16 +31,18 @@ const grades = async (auth_token, rollNumber, password, semesterId) => {
      * Else
      * Fetch all the semester details
      */
-    if(semesterId){
+    console.log("Semester ID", semesterId)
+    if (semesterId) {
         await getGrades(semesterId)
     } else {
-        for(let i = 1 ;  i < 9 ; i++){
+        console.log("Near FOr Loop")
+        for (let i = 1; i < 9; i++) {
             await getGrades(i)
         }
     }
-
+    console.log("In Grades")
     return finalGradesObject
 }
 
 // grades(18113075, 123456)
-module.exports = grades
+export default grades

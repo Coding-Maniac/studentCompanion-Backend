@@ -1,11 +1,11 @@
-const axios = require("axios")
-const { default: Cheerio } = require('cheerio');
+// const axios = require("axios")
+// const { default: Cheerio } = require('cheerio');
+import axios from "axios"
+import Cheerio from "cheerio"
+import attendanceProcessor from './common/attendanceProcessor'
 axios.defaults.withCredentials = true
 
-const login = require('./common/intializeLogin')
-const attendanceProcessor = require('./common/attendanceProcessor')
-
-const attendance = async (auth_token, rollNumber, password) => {
+const attendance = async (auth_token) => {
 
     const erpConfig = axios.create({
         baseURL: "https://studentportal.hindustanuniv.ac.in/search",
@@ -78,4 +78,4 @@ const attendance = async (auth_token, rollNumber, password) => {
     return attendanceValues
 }
 
-module.exports = attendance
+export default attendance
