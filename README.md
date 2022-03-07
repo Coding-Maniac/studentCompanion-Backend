@@ -4,5 +4,10 @@ This project is specifically designed for Hindustan University students to track
 
 ## How to run
 
-1. Install the required packages `npm install`
-2. Run the application using `npm dev`
+1. Install the required packages `yarn install`
+2. Run the application in development `yarn dev`
+
+
+##  To use in production
+1. Install the required packages `yarn install`
+2. Run in production `yarn prod`
