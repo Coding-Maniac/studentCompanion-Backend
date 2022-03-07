@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
   res.send(`Hello World from host ERP API!`)
 })
 
-app.post('/authorize', (req, res) => {
+app.post('/erp/authorize', (req, res) => {
   const { body } = req
   const { rollNumber, password } = body
   console.log("Roll Number", rollNumber)

@@ -6,7 +6,9 @@ const userSchema = new mongoose.Schema({
     },
     roll_number: {
         type: Number,
-        required: true
+        required: true,
+        minlength: [8, 'Roll number must be atleast 8 digits'],
+        unique: true
     },
     password: {
         type: String,

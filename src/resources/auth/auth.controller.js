@@ -1,8 +1,23 @@
 import User from "../users/user.model"
 
 export const SignUp = async (req, res) => {
-    const user = await User.create(req.body)
-    return res.status(200).send(user)
+    User.create(req.body).then((newUser) => {
+        return res.status(200).json(newUser)
+    }).catch((err) => {
+        console.error('Error Validating!', err);
+        if (err.name == 'ValidationError') {
+            res.status(422).json(err);
+        } else if (err.code === 11000) {
+            res.status(422).json({
+                ...err, "errors": {
+                    message: "User Already Exists"
+                }
+            })
+        } else {
+            console.error(err);
+            res.status(500).json(err);
+        }
+    })
 }
 
 export const Login = async (req, res) => {
