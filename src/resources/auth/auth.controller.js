@@ -7,22 +7,30 @@ export const SignUp = async (req, res) => {
 }
 
 export const Login = async (req, res) => {
+
     User.findOne({
         roll_number: req.body.roll_number
     }).exec((err, _user) => {
-        console.log("DB Password", _user.password)
-        console.log("Req Password", req.body.password)
+        if (err) {
+            return res.status(404).send({
+                error: 'User not found',
+                additional_error: err
+            })
+        }
+
         if (_user) {
             if (_user.password === req.body.password) {
                 return res.status(200).send(_user)
             } else {
-                return res.status(404).send({
-                    error: "User not found"
+                return res.status(403).send({
+                    error: "Password Incorrect"
                 })
             }
+        } else {
+            return res.status(404).send({
+                error: "User not found",
+            })
         }
     })
-    // console.log(_user)
-
 
 }
