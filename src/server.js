@@ -5,10 +5,25 @@ import authorize from './utils/authorize'
 import connect from './connect'
 import gradesRouter from './resources/grades/grades.router'
 import authRouter from './resources/auth/auth.router'
+import faceRouter from './resources/faceRecognition/face.router'
+import { Canvas, Image } from 'canvas';
+import fileupload from "express-fileupload"
+import { env } from 'face-api.js'
 
+env.monkeyPatch({ Canvas, Image })
 const app = express()
 app.use(express.json())
+app.use(fileupload({ useTempFiles: true, debug: true }))
 var compression = require('compression')
+
+async function LoadModels() {
+  // Load the models
+  // __dirname gives the root directory of the server
+  await faceapi.nets.faceRecognitionNet.loadFromDisk(__dirname + "src/models");
+  await faceapi.nets.faceLandmark68Net.loadFromDisk(__dirname + "src/models");
+  await faceapi.nets.ssdMobilenetv1.loadFromDisk(__dirname + "src/models");
+}
+LoadModels();
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -24,6 +39,7 @@ const port = process.env.PORT || 3030
 
 app.use('/grades', gradesRouter)
 app.use('/auth', authRouter)
+app.use('/face', faceRouter)
 
 app.get('/', function (req, res) {
   res.send(`Hello World from host ERP API!`)
