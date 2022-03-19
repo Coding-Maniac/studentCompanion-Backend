@@ -1,5 +1,6 @@
 import FaceModel from "./face.model";
-
+import canvas from "canvas"
+import { detectSingleFace } from "face-api.js";
 async function uploadLabeledImages(images, label) {
     try {
 
@@ -8,24 +9,28 @@ async function uploadLabeledImages(images, label) {
         for (let i = 0; i < images.length; i++) {
             const img = await canvas.loadImage(images[i]);
             // Read each face and save the face descriptions in the descriptions array
-            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+            const detections = await detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
             descriptions.push(detections.descriptor);
         }
 
         // Create a new face document with the given label and save it in DB
-        const createFace = new FaceModel({
+        // const createFace = new FaceModel({
+        //     label: label,
+        //     descriptions: descriptions,
+        // });
+        // await createFace.save();
+        await FaceModel.create({
             label: label,
             descriptions: descriptions,
-        });
-        await createFace.save();
+        })
         return true;
     } catch (error) {
         console.log(error);
-        return (error);
+        return false;
     }
 }
 
-export const registerFace = () => {
+export const registerFace = async (req, res) => {
     const File1 = req.files.File1.tempFilePath
     const File2 = req.files.File2.tempFilePath
     const File3 = req.files.File3.tempFilePath

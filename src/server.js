@@ -8,7 +8,7 @@ import authRouter from './resources/auth/auth.router'
 import faceRouter from './resources/faceRecognition/face.router'
 import { Canvas, Image } from 'canvas';
 import fileupload from "express-fileupload"
-import { env } from 'face-api.js'
+import { env, nets } from 'face-api.js'
 
 env.monkeyPatch({ Canvas, Image })
 const app = express()
@@ -19,9 +19,9 @@ var compression = require('compression')
 async function LoadModels() {
   // Load the models
   // __dirname gives the root directory of the server
-  await faceapi.nets.faceRecognitionNet.loadFromDisk(__dirname + "src/models");
-  await faceapi.nets.faceLandmark68Net.loadFromDisk(__dirname + "src/models");
-  await faceapi.nets.ssdMobilenetv1.loadFromDisk(__dirname + "src/models");
+  await nets.faceRecognitionNet.loadFromDisk(__dirname + "/../public/models");
+  await nets.faceLandmark68Net.loadFromDisk(__dirname + "/../public/models");
+  await nets.ssdMobilenetv1.loadFromDisk(__dirname + "/../public/models");
 }
 LoadModels();
 

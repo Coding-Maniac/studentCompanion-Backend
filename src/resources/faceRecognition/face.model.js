@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 
 const faceSchema = new Schema({
     label: {
@@ -12,5 +12,5 @@ const faceSchema = new Schema({
     }
 })
 
-const FaceModel = mongoose.model("Face", faceSchema);
+const FaceModel = model("Face", faceSchema);
 export default FaceModel
