@@ -5,10 +5,11 @@ import authorize from './utils/authorize'
 import connect from './connect'
 import gradesRouter from './resources/grades/grades.router'
 import authRouter from './resources/auth/auth.router'
+import '@tensorflow/tfjs-node';
 import faceRouter from './resources/faceRecognition/face.router'
 import { Canvas, Image } from 'canvas';
 import fileupload from "express-fileupload"
-import { env, nets } from 'face-api.js'
+import { env, nets } from '@vladmandic/face-api'
 
 env.monkeyPatch({ Canvas, Image })
 const app = express()
@@ -95,7 +96,7 @@ app.get('/attendance', async (req, res) => {
 })
 
 const start = async () => {
-  await connect('mongodb://localhost:27017')
+  await connect('mongodb://localhost:27017/studentCompanion')
   app.listen(port, () => {
     console.log(`Server is up at http://localhost:${port}`)
   })
