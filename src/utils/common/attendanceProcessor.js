@@ -56,6 +56,7 @@ function attendanceObjectMaker(subjects) {
 }
 
 function attendanceFinder(totalClasses, AttendedClasses) {
+  // Total Classes - Total Classes taken
   // Logic for finding attendance
   let attendance = AttendedClasses / totalClasses
 

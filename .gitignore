@@ -8,6 +8,9 @@ ngrok
 
 dist
 
+# Temporary Files
+tmp/
+
 yarn-debug.log*
 yarn-error.log*
 # Yarn Integrity file
