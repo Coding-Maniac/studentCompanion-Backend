@@ -10,11 +10,12 @@ import faceRouter from './resources/faceRecognition/face.router'
 import { Canvas, Image } from 'canvas';
 import fileupload from "express-fileupload"
 import { env, nets } from '@vladmandic/face-api'
-
+import helmet from 'helmet'
 env.monkeyPatch({ Canvas, Image })
 const app = express()
 app.use(express.json())
-app.use(fileupload({ useTempFiles: true, debug: true }))
+app.use(helmet())
+app.use(fileupload({ useTempFiles: true, debug: false }))
 var compression = require('compression')
 
 async function LoadModels() {
