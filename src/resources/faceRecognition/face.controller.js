@@ -16,11 +16,6 @@ async function uploadLabeledImages(images, label) {
         }
 
         // Create a new face document with the given label and save it in DB
-        // const createFace = new FaceModel({
-        //     label: label,
-        //     descriptions: descriptions,
-        // });
-        // await createFace.save();
         await FaceModel.create({
             label: label,
             descriptions: descriptions,
