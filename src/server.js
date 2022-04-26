@@ -5,10 +5,10 @@ import authorize from './utils/authorize'
 import connect from './connect'
 import gradesRouter from './resources/grades/grades.router'
 import authRouter from './resources/auth/auth.router'
-import '@tensorflow/tfjs-node';
+import '@tensorflow/tfjs-node'
 import faceRouter from './resources/faceRecognition/face.router'
-import { Canvas, Image } from 'canvas';
-import fileupload from "express-fileupload"
+import { Canvas, Image } from 'canvas'
+import fileupload from 'express-fileupload'
 import { env, nets } from '@vladmandic/face-api'
 import helmet from 'helmet'
 env.monkeyPatch({ Canvas, Image })
@@ -21,13 +21,13 @@ var compression = require('compression')
 async function LoadModels() {
   // Load the models
   // __dirname gives the root directory of the server
-  await nets.faceRecognitionNet.loadFromDisk(__dirname + "/../public/models");
-  await nets.faceLandmark68Net.loadFromDisk(__dirname + "/../public/models");
-  await nets.ssdMobilenetv1.loadFromDisk(__dirname + "/../public/models");
+  await nets.faceRecognitionNet.loadFromDisk(__dirname + '/../public/models')
+  await nets.faceLandmark68Net.loadFromDisk(__dirname + '/../public/models')
+  await nets.ssdMobilenetv1.loadFromDisk(__dirname + '/../public/models')
 }
-LoadModels();
+LoadModels()
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header(
     'Access-Control-Allow-Headers',
@@ -43,15 +43,15 @@ app.use('/grades', gradesRouter)
 app.use('/auth', authRouter)
 app.use('/face', faceRouter)
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.send(`Hello World from host ERP API!`)
 })
 
 app.post('/erp/authorize', (req, res) => {
   const { body } = req
   const { rollNumber, password } = body
-  console.log("Roll Number", rollNumber)
-  console.log("Password", password)
+  console.log('Roll Number', rollNumber)
+  console.log('Password', password)
   if (rollNumber && password) {
     authorize(rollNumber, password)
       .then(response => {
@@ -65,9 +65,13 @@ app.post('/erp/authorize', (req, res) => {
       .catch(err => {
         res.status(401)
         return res.send({
-          "error": "Check Roll number and Password"
+          error: 'Check Roll number and Password'
         })
       })
+  } else {
+    return res.status(400).send({
+      error: 'Kindly Provide Roll Number and Password'
+    })
   }
 })
 
